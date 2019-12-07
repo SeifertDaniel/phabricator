@@ -53,12 +53,23 @@ abstract class PhabricatorLiskDAO extends LiskDAO {
     return $this;
   }
 
+  protected function getDBNameByApplicationName()
+  {
+      switch ($this->getApplicationName()) {
+          case 'config':
+              return 'd0307956';
+          default:
+              echo $this->getApplicationName();
+              die();
+      }
+  }
+
   /**
    * @task config
    */
   protected function establishLiveConnection($mode) {
     $namespace = self::getStorageNamespace();
-    $database = $namespace.'_'.$this->getApplicationName();
+    $database = $this->getDBNameByApplicationName();
 
     $is_readonly = PhabricatorEnv::isReadOnly();
 
